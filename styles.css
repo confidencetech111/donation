@@ -1,0 +1,176 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&family=Barlow+Semi+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Lexend+Deca:wght@100..900&family=Oswald:wght@200..700&family=Outfit:wght@100..900&family=Tuffy:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+body{
+    font-family: "Outfit", sans-serif;
+  font-optical-sizing: auto;
+  margin: 0;
+  background-color: rgba(240, 248, 255, 0.781);
+}
+
+.screen-color{
+    background-color: rgba(240, 248, 255, 0.863);
+}
+
+
+
+.hero-section{
+    background-image: url("https://img.freepik.com/free-photo/child-stuck-migration-crisis-while-trying-immigrate_23-2150901898.jpg?ga=GA1.1.1066485488.1719908267&semt=ais_hybrid&w=740");
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+    background-position: center;
+    background-attachment: fixed;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    flex-direction: column;
+    justify-content: end;
+   
+}
+.logo-page{
+    width: 50px;
+       
+}
+.hero-section::before{
+    content: "";
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1;
+}
+.hero-section .color{
+    position: relative;
+    z-index: 2;
+    
+    width: 100%;
+    background-color: rgba(106, 90, 228, 0.623);  
+    
+}
+.icon{
+    width: 80px;
+}
+.footer-bg{
+    background-color: gray;
+}
+.text-decoration-none{
+    color: rgba(0, 0, 0, 0.541);
+    font-weight: 600;
+}
+.text-decoration-none:hover{
+ color: white;
+ transition: color 1s;
+}
+.story-section{
+    background-color: azure;
+}
+
+@media (min-width: 768px){
+    .logo-page{
+    width: 70px;
+    border-radius: 50%;
+       
+}
+    
+}
+
+
+/* about page styling */
+.about-image{
+    background-image: url("https://img.freepik.com/free-photo/portrait-boy-having-fun-nature_23-2151008207.jpg?ga=GA1.1.1066485488.1719908267&semt=ais_hybrid&w=740");
+    height: 100vh;
+    width: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: end;
+    align-items: flex-end;
+    flex-direction: column;
+    background-position: center;
+
+
+}
+
+
+.about-img{
+
+    width: 100%;
+}
+.about-icon{
+    width: 100px;
+}
+.exist-section{
+    background-color: aliceblue;
+    border-radius: 50px;
+
+}
+@media (min-width: 768px) { 
+.join-us-text{
+    margin-top: 25%;
+    margin-left: 200px;
+}
+.about-image h1{
+    position: relative;
+    left: -460px;
+}
+}
+
+@media (min-width: 768px) {
+    .join-us-img{
+        height: 400px;
+        width: 700px;
+        border-radius: 70px;
+    }
+}
+
+.navbar{
+    background-color: beige;
+}
+
+/* donate styles */
+
+.donate-page{
+   background-image: url("https://img.freepik.com/free-photo/portrait-little-cute-girl-smiling_23-2149352399.jpg?ga=GA1.1.1066485488.1719908267&semt=ais_hybrid&w=740");
+    width: 100%;
+    height: 100vh;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    display: flex;
+    justify-content: column;
+    align-items: flex-end;
+
+}
+.ukraine-flag{
+    width: 60px;
+    padding-left: 10px;
+    text-align: center;
+  
+}
+.text-decoration-upper{
+    text-transform: capitalize;
+}
+.donate-button{
+   width: 80%; 
+}
+.check-logo{
+    width: 100px;
+}
+
+/* story section */
+
+.story-page{
+     background-image: url("https://img.freepik.com/free-photo/young-depressed-adult-home_23-2149563020.jpg?ga=GA1.1.1066485488.1719908267&semt=ais_hybrid&w=740");
+    width: 100%;
+    height: 100vh;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    display: flex;
+    justify-content: column;
+    align-items: flex-end;
+}
