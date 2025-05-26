@@ -52,6 +52,12 @@ body{
 .icon{
     width: 80px;
 }
+
+.x-icon{
+    width: 30px;
+}
+
+
 .footer-bg{
     background-color: gray;
 }
