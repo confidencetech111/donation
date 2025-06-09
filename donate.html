@@ -552,7 +552,7 @@
   function populateFakeDonors() {
     for (let i = 0; i < 50; i++) {
       const name = randomNames[Math.floor(Math.random() * randomNames.length)];
-      const amount = (Math.random() * 10000 + 100).toFixed();
+      const amount = (Math.random() * 7550 + 50).toFixed();
       const li = document.createElement("li");
       li.className = "list-group-item d-flex justify-content-between align-items-center px-3 py-2 border-bottom";
       li.innerHTML = `<span class="donor-name">${name}</span><span class="donation-amount">$${amount}</span>`;
