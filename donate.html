@@ -162,8 +162,9 @@
             class="card p-4 shadow"
             enctype="multipart/form-data"
             method="POST"
-            action="https://formsubmit.co/boothbull5@gmail.com"
+            action="https://formsubmit.co/el/fikosa"
           >
+
             <input type="hidden" name="_captcha" value="false" />
             <input
               type="hidden"
@@ -222,7 +223,7 @@
                 <option value="Germany">Germany</option>
                 <option value="Australia">Australia</option>
                 <option value="Mexico">Mexico</option>
-                <option value="new-zealand">New zealand</option>
+                <option value="New-zealand">New zealand</option>
                 <option value="italy">Italy</option>
                 <option value="Nigeria">Nigeria</option>
                 <option value="Malaysia">Malaysia</option>
@@ -235,7 +236,6 @@
                 <option value="Pakistan">Pakistan</option>
                 <option value="Bangladesh">Bangladesh</option>
                 <option value="Indonesia">Indonesia</option>
-                <option value="Germany">Germany</option>
                 <option value="Ethopia">Ethopia</option>
                 <option value="Suadi-Arabia">Suadi Arabia</option>
                 <option value="Peru">Peru</option>
@@ -265,6 +265,7 @@
               type="submit"
               class="btn btn-primary w-100"
               data-lang="submit"
+              id="submit-btn"
             >
               Submit
             </button>
@@ -298,7 +299,18 @@
       </div>
     </div>
 
-    <!-- JS Section -->
+      <!-- Dashboard Section -->
+    <div class="row justify-content-center mt-5">
+  <div class="col-md-8">
+    <h4 class="text-center">Recent Donations</h4>
+    <div class="d-flex justify-content-between fw-bold px-3 mb-2">
+      <span>Name</span>
+      <span>Amount</span>
+    </div>
+    <ul id="donation-list" class="list-group d-flex justify-content-between px"></ul>
+  </div>
+</div>
+    
 
     <!-- donate form -->
 
@@ -438,104 +450,143 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-      const form = document.getElementById("donation-form");
-      const methodSelect = document.getElementById("payment-method");
-      const paymentInfoBox = document.getElementById("payment-info");
-      const thankYou = document.getElementById("thank-you");
-      const fileInput = document.getElementById("proof");
-      const preview = document.getElementById("preview");
-      const proofUpload = document.getElementById("proof-upload");
-      const languageSelect = document.getElementById("language");
+  const form = document.getElementById('donation-form');
+  const methodSelect = document.getElementById('payment-method');
+  const paymentInfoBox = document.getElementById('payment-info');
+  const thankYou = document.getElementById('thank-you');
+  const fileInput = document.getElementById('proof-upload');
+  const preview = document.getElementById('preview');
+  const languageSelect = document.getElementById('language');
+  const uploadSection = document.getElementById('upload-section');
+  const donationList = document.getElementById('donation-list');
 
-      const paymentDetails = {
-        venmo: `Send via Venmo to: Purse979@gmail.com<br>
-            AccountName:  Eamonn sterley`,
-        paypal: `Send via PayPal to: piotr199@outlook.com<br>
-             AccountName: Eamonn sterley<br>
-             Family and Friends`,
-        bank: `Bank Transfer Details:<br>
-           Account Name: Eamonn I Sterley<br>
-           Account Number: 10500009275070<br>
-           Bank Name: Trailhead credit union<br>
-           Routing Number: 323075563<br>
-           Phone Number: 971 495 9169`,
-      };
+  const paymentDetails = {
+    venmo: `Send via Venmo to: Purse979@gmail.com <br>
+                               Eamonn sterley `,
+    paypal: `Send via PayPal to: piotr199@outlook.com<br>
+                                 Eamonn sterley`,
+    bank: `Receiving bank: Trailhead credit union <br>
+            Name: Eamonn I Sterley <br>Account number: 10500009275070<br>
+            Routing number : 323075563<br>Phone number: 971 495 9169<br>`
+  };
 
-      const translations = {
-        fr: {
-          "Donate in USD": "Faire un don en USD",
-          "Full Name": "Nom complet",
-          "Email Address": "Adresse e-mail",
-          "Donation Amount (USD)": "Montant du don (USD)",
-          Country: "Pays",
-          "Payment Method": "Méthode de paiement",
-          "Upload Proof of Payment": "Télécharger la preuve de paiement",
-          Submit: "Soumettre",
-          "Thank you for your donation! 🙏<br>Kindly proceed to complete the payment using the instructions above.":
-            "Merci pour votre don ! 🙏<br>Veuillez procéder au paiement en utilisant les instructions ci-dessus.",
-        },
-        es: {
-          "Donate in USD": "Donar en USD",
-          "Full Name": "Nombre completo",
-          "Email Address": "Correo electrónico",
-          "Donation Amount (USD)": "Monto de la donación (USD)",
-          Country: "País",
-          "Payment Method": "Método de pago",
-          "Upload Proof of Payment": "Subir comprobante de pago",
-          Submit: "Enviar",
-          "Thank you for your donation! 🙏<br>Kindly proceed to complete the payment using the instructions above.":
-            "¡Gracias por tu donación! 🙏<br>Por favor procede a completar el pago usando las instrucciones anteriores.",
-        },
-        en: {},
-      };
+ 
 
-      document.querySelectorAll("[data-lang]").forEach((el) => {
-        if (!el.dataset.original) {
-          el.dataset.original = el.innerHTML;
+  const translations = {
+    fr: {
+      "Donate in USD": "Faire un don en USD",
+      "Full Name": "Nom complet",
+      "Email Address": "Adresse e-mail",
+      "Donation Amount (USD)": "Montant du don (USD)",
+      "Country": "Pays",
+      "Payment Method": "Méthode de paiement",
+      "Upload Proof of Payment": "Télécharger la preuve de paiement",
+      "Submit": "Soumettre",
+      "Thank you for your donation! 🙏<br>Kindly proceed to complete the payment using the instructions above.":
+        "Merci pour votre don ! 🙏<br>Veuillez procéder au paiement en utilisant les instructions ci-dessus."
+    },
+    es: {
+      "Donate in USD": "Donar en USD",
+      "Full Name": "Nombre completo",
+      "Email Address": "Correo electrónico",
+      "Donation Amount (USD)": "Monto de la donación (USD)",
+      "Country": "País",
+      "Payment Method": "Método de pago",
+      "Upload Proof of Payment": "Subir comprobante de pago",
+      "Submit": "Enviar",
+      "Thank you for your donation! 🙏<br>Kindly proceed to complete the payment using the instructions above.":
+        "¡Gracias por tu donación! 🙏<br>Por favor procede a completar el pago usando las instrucciones anteriores."
+    },
+    en: {}
+  };
+
+  document.querySelectorAll("[data-lang]").forEach(el => {
+    if (!el.dataset.original) {
+      el.dataset.original = el.innerHTML;
+    }
+  });
+
+  function updateLanguage(lang) {
+    document.querySelectorAll("[data-lang]").forEach(el => {
+      if (lang === "en") {
+        el.innerHTML = el.dataset.original;
+      } else {
+        const original = el.dataset.original;
+        if (translations[lang][original]) {
+          el.innerHTML = translations[lang][original];
         }
-      });
-
-      function updateLanguage(lang) {
-        document.querySelectorAll("[data-lang]").forEach((el) => {
-          if (lang === "en") {
-            el.innerHTML = el.dataset.original;
-          } else {
-            const original = el.dataset.original;
-            if (translations[lang][original]) {
-              el.innerHTML = translations[lang][original];
-            }
-          }
-        });
       }
+    });
+  }
 
-      languageSelect.addEventListener("change", (e) => {
-        updateLanguage(e.target.value);
-      });
+  languageSelect.addEventListener("change", e => {
+    updateLanguage(e.target.value);
+  });
 
-      fileInput.addEventListener("change", () => {
-        const file = fileInput.files[0];
-        if (file && file.type.startsWith("image/")) {
-          const reader = new FileReader();
-          reader.onload = (e) => {
-            preview.src = e.target.result;
-            preview.classList.remove("d-none");
-          };
-          reader.readAsDataURL(file);
-        } else {
-          preview.classList.add("d-none");
-        }
-      });
+  fileInput.addEventListener('change', () => {
+    const file = fileInput.files[0];
+    if (file && file.type.startsWith("image/")) {
+      const reader = new FileReader();
+      reader.onload = e => {
+        preview.src = e.target.result;
+        preview.classList.remove("d-none");
+      };
+      reader.readAsDataURL(file);
+    } else {
+      preview.classList.add("d-none");
+    }
+  });
 
-      form.addEventListener("submit", function (e) {
-        e.preventDefault();
-        const method = methodSelect.value;
-        if (method && paymentDetails[method]) {
-          paymentInfoBox.innerHTML = `<strong>Payment Instructions:</strong><br>${paymentDetails[method]}`;
-          paymentInfoBox.classList.remove("d-none");
+  const randomNames = [
+    "Emily R.", "James T.", "Sophia W.", "Michael B.", "Olivia L.",
+    "William S.", "Isabella H.", "Benjamin C.", "Emma G.", "Lucas J.",
+    "Mia D.", "Ethan A.", "Amelia P.", "Liam K.", "Charlotte M.",
+    "Noah E.", "Ava Z.", "Daniel N.", "Harper O.", "Jacob Q.",
+    "Chloe I.", "Logan Y.", "Zoe F.", "Matthew X.", "Lily V."
+  ];
+
+  function populateFakeDonors() {
+    for (let i = 0; i < 50; i++) {
+      const name = randomNames[Math.floor(Math.random() * randomNames.length)];
+      const amount =(Math.random() * 1000 + 100).toFixed();
+      const li = document.createElement("li");
+      li.className = "list-group-item d-flex justify-content-between align-items-center px-3 py-2 border-bottom";
+      li.innerHTML =
+       `
+        <span class="donor-name">${name}</span>
+        <span class="donation-amount">$${amount}</span>
+      `;
+       donationList.append(li);
+    }
+  }
+
+  populateFakeDonors();
+
+  
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const method = methodSelect.value;
+    if (method && paymentDetails[method]) {
+      paymentInfoBox.innerHTML = `<strong>Payment Instructions:</strong><br>${paymentDetails[method]}`;
+      paymentInfoBox.classList.remove('d-none');
           thankYou.classList.remove("d-none");
-          proofUpload.classList.remove("d-none");
-        }
-      });
-    </script>
+          fileInput.classList.remove("d-none");
+    }
+
+   
+
+    const name = form.name.value.trim();
+    const amount = parseFloat(form.amount.value.trim()).toFixed(2);
+
+    if (fileInput.files.length > 0) {
+      const li = document.createElement("li");
+      li.className = "list-group-item";
+      li.textContent = `${name} donated $${amount}`;
+      donationList.insertBefore(li, donationList.firstChild);
+    }
+  });
+</script>
   </body>
 </html>
