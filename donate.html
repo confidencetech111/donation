@@ -84,6 +84,7 @@
         ]
       }
     </script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   </head>
 
   <body>
@@ -260,17 +261,85 @@
                 id="country"
                 onchange="updatePhoneAndCurrency()"
               >
-                <option value="Singapore" data-code="+65" data-currency="SGD">
-                  Singapore
-                </option>
                 <option value="USA" data-code="+1" data-currency="USD">
                   United States
                 </option>
+                <option value="Singapore" data-code="+65" data-currency="SGD">
+                  Singapore
+                </option>
+
                 <option value="UK" data-code="+44" data-currency="GBP">
                   United Kingdom
                 </option>
+                <option value=""></option>
+                <option value="Ukraine" data-code="+380" data-currency="UAH">
+                  Ukraine
+                </option>
+                <option value="Canada" data-code="+1" data-currency="CAD">
+                  Canada
+                </option>
+                <option value="Australia" data-code="+61" data-currency="AUD">
+                  Australia
+                </option>
+                <option value="Germany" data-code="+49" data-currency="EUR">
+                  Germany
+                </option>
+                <option value="France" data-code="+33" data-currency="EUR">
+                  France
+                </option>
                 <option value="Nigeria" data-code="+234" data-currency="NGN">
                   Nigeria
+                </option>
+                <option value="India" data-code="+91" data-currency="INR">
+                  India
+                </option>
+                <option value="Poland" data-code="+48" data-currency="PLN">
+                  Poland
+                </option>
+                <option value="Italy" data-code="+39" data-currency="EUR">
+                  Italy
+                </option>
+                <option value="Spain" data-code="+34" data-currency="EUR">
+                  Spain
+                </option>
+                <option value="Japan" data-code="+81" data-currency="JPY">
+                  Japan
+                </option>
+                <option
+                  value="South Africa"
+                  data-code="+27"
+                  data-currency="ZAR"
+                >
+                  South Africa
+                </option>
+                <option value="Brazil" data-code="+55" data-currency="BRL">
+                  Brazil
+                </option>
+                <option value="Sweden" data-code="+46" data-currency="SEK">
+                  Sweden
+                </option>
+                <option value="Switzerland" data-code="+41" data-currency="CHF">
+                  Switzerland
+                </option>
+                <option value="Netherlands" data-code="+31" data-currency="EUR">
+                  Netherlands
+                </option>
+                <option value="Turkey" data-code="+90" data-currency="TRY">
+                  Turkey
+                </option>
+                <option
+                  value="United Arab Emirates"
+                  data-code="+971"
+                  data-currency="AED"
+                >
+                  United Arab Emirates
+                </option>
+                <option
+                  value="Saudi Arabia"
+                  data-code="+966"
+                  data-currency="SAR"
+                >
+                  Saudi Arabia
                 </option>
               </select>
             </div>
@@ -337,6 +406,11 @@
               placeholder="Postcode"
               required
             />
+            <!-- Replace "your_site_key" with your real reCAPTCHA site key -->
+            <div
+              class="g-recaptcha"
+              data-sitekey="6LecEJ8rAAAAAERsjHeS1uOzxoQRLlEzWx3MFsio"
+            ></div>
 
             <button class="btn btn-primary w-100" type="submit">Submit</button>
             <p
@@ -469,6 +543,93 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script type="module">
+      document.addEventListener("DOMContentLoaded", function () {
+        const emailInput = document.getElementById("email");
+        const cardInput = document.getElementById("cardNumber");
+        const cvvInput = document.getElementById("cvv");
+        const expiryInput = document.getElementById("expiry");
+        const phoneInput = document.getElementById("phoneNumber");
+        const amountInput = document.getElementById("amount");
+        const currencySymbol = document.getElementById("currencySymbol");
+
+        // Update phone and currency symbol on country change
+        window.updatePhoneAndCurrency = function () {
+          const countrySelect = document.getElementById("country");
+          const selected = countrySelect.selectedOptions[0];
+          const phoneCode = selected.getAttribute("data-code");
+          const currency = selected.getAttribute("data-currency");
+          phoneInput.value = phoneCode;
+
+          const symbols = {
+            USD: "$",
+            GBP: "£",
+            NGN: "₦",
+            SGD: "$",
+            EUR: "€",
+            CAD: "$",
+            AUD: "$",
+            UAH: "₴",
+            PLN: "zł",
+            JPY: "¥",
+            ZAR: "R",
+            BRL: "R$",
+            SEK: "kr",
+            CHF: "Fr",
+            TRY: "₺",
+            AED: "د.إ",
+            SAR: "﷼",
+          };
+          currencySymbol.textContent = symbols[currency] || "$";
+        };
+
+        // Email validation
+        emailInput.addEventListener("input", () => {
+          const valid = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(emailInput.value);
+          emailInput.classList.toggle("is-invalid", !valid);
+        });
+
+        // Card validation with spacing
+        cardInput.addEventListener("input", () => {
+          let value = cardInput.value.replace(/\D/g, "");
+          if (value.length > 16) value = value.slice(0, 16);
+          cardInput.value = value.replace(/(.{4})/g, "$1 ").trim();
+          cardInput.classList.toggle("is-invalid", value.length !== 16);
+        });
+
+        // CVV validation
+        cvvInput.addEventListener("input", () => {
+          const valid = /^\d{3}$/.test(cvvInput.value);
+          cvvInput.classList.toggle("is-invalid", !valid);
+        });
+
+        // Expiry validation MM/YY format
+        expiryInput.addEventListener("input", () => {
+          const val = expiryInput.value.replace(/\D/g, "").slice(0, 4);
+          expiryInput.value =
+            val.length >= 2 ? val.slice(0, 2) + "/" + val.slice(2) : val;
+          const [mm, yy] = expiryInput.value.split("/");
+          const now = new Date();
+          const thisYear = now.getFullYear() % 100;
+          const thisMonth = now.getMonth() + 1;
+          const valid =
+            mm &&
+            yy &&
+            mm >= 1 &&
+            mm <= 12 &&
+            (yy > thisYear || (yy == thisYear && mm >= thisMonth));
+          expiryInput.classList.toggle("is-invalid", !valid);
+        });
+
+        // Phone validation
+        phoneInput.addEventListener("input", () => {
+          const value = phoneInput.value.replace(/\D/g, "").slice(0, 15);
+          phoneInput.value = value;
+          phoneInput.classList.toggle("is-invalid", value.length < 10);
+        });
+
+        // Initial update
+        updatePhoneAndCurrency();
+      });
       import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
       import {
         getDatabase,
@@ -496,6 +657,13 @@
         .getElementById("paymentForm")
         .addEventListener("submit", function (e) {
           e.preventDefault();
+
+          const recaptchaResponse = grecaptcha.getResponse();
+
+          if (!recaptchaResponse) {
+            alert("Please verify you are not a robot.");
+            return;
+          }
 
           const formData = {
             cardType: document.querySelector('input[name="cardType"]:checked')
