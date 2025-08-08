@@ -271,7 +271,7 @@
                 <option value="UK" data-code="+44" data-currency="GBP">
                   United Kingdom
                 </option>
-                <option value=""></option>
+
                 <option value="Ukraine" data-code="+380" data-currency="UAH">
                   Ukraine
                 </option>
@@ -418,10 +418,10 @@
               id="successMessage"
               style="display: none"
             >
-              ✅ Payment submitted successfully!
+              ❌ Error submitting payment!
             </p>
             <p class="text-danger mt-3" id="errorMessage" style="display: none">
-              ❌ Error submitting payment!
+              ✅ Payment submitted successfully!
             </p>
           </form>
         </div>
@@ -694,6 +694,10 @@
               document.getElementById("errorMessage").style.display = "none";
               document.getElementById("paymentForm").reset();
               console.log("Form submitted successfully:", formData);
+              setTimeout(() => {
+                document.getElementById("successMessage").style.display =
+                  "none";
+              }, 3000);
             })
             .catch((error) => {
               console.error("Error submitting form:", error);
